@@ -46,17 +46,14 @@ int main(int argc, char **argv) {
                             "int main(void) {%s return 0;}";
   char *code = NULL;
   int code_size = 0;
-  int i = 0;
-  while (brainfuck_code[i]) {
+  for (int i = 0; brainfuck_code[i] != 0; i++) {
     if (commands[brainfuck_code[i]] == NULL) {
-      i++;
       continue;
     }
     int length = strlen(commands[brainfuck_code[i]]);
     code = realloc(code, code_size + length + 1);
     strcpy(code + code_size, commands[brainfuck_code[i]]);
     code_size += length;
-    i++;
   }
   int output_length = strlen(code) + strlen(program_template);
   char *final_output = calloc(output_length + 1, sizeof(char));
