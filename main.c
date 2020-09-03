@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
   }
   char *input_name = argv[1];
   char *commands[LUT_SIZE];
-  memset(commands, 0, LUT_SIZE);
+  memset(commands, 0, LUT_SIZE * sizeof(char *));
   commands['>'] = "++p;";
   commands['<'] = "--p;";
   commands['+'] = "++*p;";
