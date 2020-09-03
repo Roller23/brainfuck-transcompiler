@@ -4,6 +4,7 @@
 
 #define OUTPUT_NAME "output.c"
 #define LUT_SIZE 0xFF
+#define AVAILABLE_MEMORY "1024"
 
 #if defined(__clang__)
   #define COMPILER "clang"
@@ -36,24 +37,24 @@ int main(int argc, char **argv) {
   fseek(input, 0, SEEK_END);
   int size = ftell(input);
   fseek(input, 0, SEEK_SET);
-  char *brainfuck = calloc(size + 1, sizeof(char));
-  fread(brainfuck, 1, size, input);
+  char *brainfuck_code = calloc(size + 1, sizeof(char));
+  fread(brainfuck_code, 1, size, input);
   fclose(input);
   char program_template[] = "#include <stdio.h>\n"
-                            "char m[1024];\n"
+                            "char m[" AVAILABLE_MEMORY "];\n"
                             "char *p = m;\n"
                             "int main(void) {%s return 0;}";
   char *code = NULL;
   int code_size = 0;
   int i = 0;
-  while (brainfuck[i]) {
-    if (commands[brainfuck[i]] == NULL) {
+  while (brainfuck_code[i]) {
+    if (commands[brainfuck_code[i]] == NULL) {
       i++;
       continue;
     }
-    int length = strlen(commands[brainfuck[i]]);
+    int length = strlen(commands[brainfuck_code[i]]);
     code = realloc(code, code_size + length + 1);
-    strcpy(code + code_size, commands[brainfuck[i]]);
+    strcpy(code + code_size, commands[brainfuck_code[i]]);
     code_size += length;
     i++;
   }
